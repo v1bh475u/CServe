@@ -1,3 +1,6 @@
+# [submodule "lib/RIO"]
+#     path=lib/RIO
+#     url=https://github.com/v1bh475u/RIO
 [submodule "lib/RIO"]
-    path=lib/RIO
-    url=https://github.com/v1bh475u/RIO
+	path = lib/RIO
+	url = https://github.com/v1bh475u/RIO
