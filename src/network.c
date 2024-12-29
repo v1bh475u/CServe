@@ -2,7 +2,7 @@
 
 int open_clientfd(char *hostname, char *port)
 {
-    SA hints, *listp, *p;
+    struct addrinfo hints, *listp, *p;
     int clientfd;
     memset(&hints, 0, sizeof(SA));
     // TCP
@@ -31,7 +31,7 @@ int open_clientfd(char *hostname, char *port)
 
 int open_listenfd(char *port)
 {
-    SA hints, *listp, *p;
+    struct addrinfo hints, *listp, *p;
     int listenfd, optval = 1;
 
     memset(&hints, 0, sizeof(SA));

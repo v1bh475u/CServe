@@ -1,9 +1,14 @@
 #include <stdio.h>
-#include <sys/socket.h>
-#include <netdb.h>
 #include <stdlib.h>
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <netdb.h>
+#include <string.h>
+#include <unistd.h>
 
-#define MAXLINE 256
+#pragma once
+
+#define MAXLINE 8192
 #define LISTENQ 1024
 
 // Simplified server socket creation
