@@ -127,6 +127,8 @@ void get_filetype(char *filename, char *filetype)
         strcpy(filetype, "image/gif");
     else if (strcmp(extension, ".png") == 0)
         strcpy(filetype, "image/png");
+    else if (strcmp(extension, ".mpg") == 0)
+        strcpy(filetype, "video/mpeg");
     else
         strcpy(filetype, "text/plain");
 }
