@@ -1,14 +1,19 @@
-#include "network.h"
-#include <stdlib.h>
 #include "rio.h"
+#include "network.h"
+#include <fcntl.h>
 #include <sys/stat.h>
-#include <strings.h>
+#include <sys/mman.h>
+#include <sys/wait.h>
+
+#pragma once
+
+extern char **environ;
 
 // handles a single HTTP transcation
 void handle_HTTP_transcation(int fd);
 
 // parses the requests headers
-void read_requesthdrs(char *bp);
+void read_requesthdrs(rio_t *rp);
 
 // parses uri for arguments of cgi
 int parse_uri(char *uri, char *filename, char *cgiargs);
@@ -23,4 +28,4 @@ void get_filetype(char *filename, char *filetype);
 void serve_dynamic(int fd, char *filename, char *cgiargs);
 
 // handles client error
-void clienterror(int fd, char *cause, char *errnum, char *shortmsg, char *longmsg);
+void client_error(int fd, char *cause, char *errnum, char *shortmsg, char *longmsg);
