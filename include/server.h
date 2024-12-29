@@ -29,3 +29,6 @@ void serve_dynamic(int fd, char *filename, char *cgiargs);
 
 // handles client error
 void client_error(int fd, char *cause, char *errnum, char *shortmsg, char *longmsg);
+
+// handles the signals for reaping child processes and for writing to premature closed sockets
+void init_signal_handlers();

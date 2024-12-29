@@ -2,6 +2,7 @@
 
 int main(int argc, char **argv)
 {
+    init_signal_handlers();
     int listenfd, connfd;
     socklen_t clientlen;
     // To keep the code protocol-independent

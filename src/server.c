@@ -151,7 +151,6 @@ void serve_dynamic(int fd, char *filename, char *cgiargs)
         dup2(fd, STDOUT_FILENO);              // Redirect stdout to client
         execve(filename, emptylist, environ); // Run CGI program
     }
-    wait(NULL); // Parent waits for and reaps child
 }
 
 void client_error(int fd, char *cause, char *errnum, char *shortmsg, char *longmsg)
@@ -176,4 +175,21 @@ void client_error(int fd, char *cause, char *errnum, char *shortmsg, char *longm
     buf_len += snprintf(buf, MAXLINE, "Content-length: %d\r\n\r\n", body_len);
     rio_writen(fd, buf, buf_len);
     rio_writen(fd, body, body_len);
+}
+static void sigchld_handler(int sig)
+{
+    while (waitpid(-1, 0, WNOHANG) > 0)
+        ;
+    return;
+}
+
+static void sigpipe_handler(int sig)
+{
+    perror("sigpipe_handler");
+    return;
+}
+void init_signal_handlers()
+{
+    signal(SIGCHLD, sigchld_handler);
+    signal(SIGPIPE, sigpipe_handler);
 }
