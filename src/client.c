@@ -1,26 +1,24 @@
 #include "network.h"
-
+#include "rio.h"
 int main(int argc, char **argv)
 {
-    int listenfd, connfd;
-    socklen_t clientlen;
-    struct sockaddr_storage clientaddr;
-    char client_hostname[MAXLINE], client_port[MAXLINE];
-
-    if (argc != 2)
+    int clientfd;
+    char *host, *port, buf[MAXLINE];
+    rio_t rio;
+    if (argc != 3)
     {
-        fprintf(stderr, "usage: %s <port>\n", argv[0]);
+        fprintf(stderr, "usage: %s <host> <port>\n", argv[0]);
         exit(0);
     }
-
-    listenfd = open_listenfd(argv[1]);
-    while (1)
+    host = argv[1];
+    port = argv[2];
+    clientfd = open_clientfd(host, port);
+    rio_readinitb(&rio, clientfd);
+    while (fgets(buf, MAXLINE, stdin) != NULL)
     {
-        clientlen = sizeof(struct sockaddr_storage);
-        connfd = accept(listenfd, (struct sockaddr *)&clientaddr, &clientlen);
-        getnameinfo((struct sockaddr *)&clientaddr, clientlen, client_hostname, MAXLINE, client_port, MAXLINE, 0);
-        printf("Connected to (%s, %s)\n", client_hostname, client_port);
-        close(connfd);
+        rio_writen(clientfd, buf, strlen(buf));
+        rio_readlineb(&rio, buf, MAXLINE);
+        fputs(buf, stdout);
     }
-    exit(0);
+    close(clientfd);
 }
